@@ -5,9 +5,12 @@ import grails.converters.JSON
 class ExampleController {
 
     def readRssService;
+    def rssCrawlerService;
 
-    def index() {
+    def crawler() {
 
-        render(readRssService.readRss() as JSON);
+        rssCrawlerService.crawler();
+
+        render([isSuccess: true] as JSON);
     }
 }

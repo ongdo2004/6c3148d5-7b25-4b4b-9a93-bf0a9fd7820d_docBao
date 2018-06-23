@@ -1,6 +1,8 @@
 package com.azsolutions.service
 
 import com.azsolutions.bean.Rss
+import com.azsolutions.domain.RssConfig
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -97,98 +99,11 @@ class ReadRssService {
         return bean;
     }
 
-    private Map getMappingConfig(String url) {
+    Rss readRss(RssConfig rssConfig) {
 
-        switch (url) {
+        String url = rssConfig.rssUrl;
 
-            case "http://rss.cnn.com/rss/edition.rss":
-                return [
-
-                        title      : [path: "title"],
-                        description: [path: "description"],
-                        link       : [path: "link"],
-
-                        image      : [
-                                path  : "image",
-                                config: [
-                                        url  : [path: "url"],
-                                        title: [path: "title"],
-                                        link : [path: "link"],
-                                ]
-                        ],
-
-                        items      : [
-                                path  : "item",
-                                config: [
-                                        title      : [path: "title"],
-                                        link       : [path: "link"],
-                                        pubDate    : [path: "pubDate"],
-                                        guid       : [path: "guid"],
-                                        description: [path: "description"],
-
-                                        thumbnails : [
-                                                path  : "group.content",
-                                                config: [
-                                                        type  : [path: "@medium"],
-                                                        width : [path: "@width"],
-                                                        height: [path: "@height"],
-                                                        url   : [path: "@url"]
-                                                ]
-                                        ]
-                                ]
-                        ],
-
-
-                ];
-
-            case "http://feeds.foxnews.com/foxnews/latest?format=xml":
-                return [
-
-                        title      : [path: "image"],
-                        description: [path: "description"],
-                        link       : [path: "link"],
-
-                        image      : [
-                                path  : "image",
-                                config: [
-                                        url  : [path: "url"],
-                                        title: [path: "title"],
-                                        link : [path: "link"],
-                                ]
-                        ],
-
-                        items      : [
-                                path  : "item",
-                                config: [
-                                        title      : [path: "title"],
-                                        link       : [path: "link"],
-                                        pubDate    : [path: "pubDate"],
-                                        guid       : [path: "guid"],
-                                        description: [path: "description"],
-
-                                        thumbnails : [
-                                                path  : "group.content",
-                                                config: [
-                                                        type  : [path: "@medium"],
-                                                        width : [path: "@width"],
-                                                        height: [path: "@height"],
-                                                        url   : [path: "@url"]
-                                                ]
-                                        ]
-                                ]
-                        ],
-
-
-                ];
-        }
-    }
-
-    def readRss() {
-
-//        String url = "http://rss.cnn.com/rss/edition.rss";
-        String url = "http://feeds.foxnews.com/foxnews/latest?format=xml";
-
-        Map mappingConfig = getMappingConfig(url);
+        Map mappingConfig = JSON.parse(rssConfig.configJson);
 
         def channel = new XmlSlurper().parse(url).channel;
 

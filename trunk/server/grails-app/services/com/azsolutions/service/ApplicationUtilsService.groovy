@@ -1,11 +1,19 @@
 package com.azsolutions.service
 
 import grails.gorm.transactions.Transactional
+import grails.web.databinding.DataBindingUtils
 
 import java.text.SimpleDateFormat
 
 @Transactional
-class UtilsService {
+class ApplicationUtilsService {
+
+    def bindData(def target, def source) {
+
+        DataBindingUtils.bindObjectToInstance(target, source, null, null, "");
+
+        return target;
+    }
 
     Date parseRssDate(String dateStr) {
 

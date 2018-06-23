@@ -3,6 +3,9 @@ package server
 class UrlMappings {
 
     static mappings = {
+
+        "/news"(resources: "news")
+
         "/$controller/$action?/$id?(.$format)?"{
             constraints {
                 // apply constraints here

@@ -10,7 +10,7 @@ import grails.gorm.transactions.Transactional
 class RssCrawlerService {
 
     def readRssService;
-    def utilsService;
+    def applicationUtilsService;
 
     def crawler() {
 
@@ -34,7 +34,7 @@ class RssCrawlerService {
 
                 News news = new News(
                         title: item.title, link: item.link,
-                        pubDate: utilsService.parseRssDate(item.pubDate),
+                        pubDate: applicationUtilsService.parseRssDate(item.pubDate),
                         guid: item.guid, description: item.description, rssSourceId: rssConfig.rssSourceId,
                         isDeleted: false, lastModifiedUser: "system", lastModifiedTime: now
                 );
